@@ -18,49 +18,53 @@ Esta integração pode ter vários desdobramentos no que diz respeito á supervi
 
 ## Funcionalidades Principais
 
-1. **Leitura de Dados:** O sensor de temperatura e umidade é utilizado para medir as condições ambientais.
-
-2. **Exibição em Tempo Real:** Os dados são exibidos em um display LCD 16x2, proporcionando uma visualização instantânea das condições.
-
-3. **Armazenamento de Dados:** Utilizando a memória EEPROM do Arduino, as leituras podem ser armazenadas para referência futura.
-
-4. **Controle de Dispositivos Externos:** Opcionalmente, o sistema pode ser expandido para controlar dispositivos externos, como ventiladores ou aquecedores, baseando-se nas leituras.
+Este sistema incial tem como objetivo apenas o teste de hardware para posterior integração com o sistema SCADA. Embora o sistema tenha sensores analógicos, a programação preliminar não faz a leitura completados sensores. São apenas testes para verificação da integridade do hardware.
 
 ## Esquema de Conexão
 
 ![Esquema de Conexão](esquema_conexao.png)
 
-## Código Fonte (trecho)
+## Código Fonte
 
 ```cpp
-#include <DHT.h>
-#include <LiquidCrystal_I2C.h>
+//codigo para teste do hardware do Proj. 01
 
-#define DHTPIN 2
-#define DHTTYPE DHT11
+#define bot1  2
+#define bot2  3
+#define LED1  7
+#define LED2  6
 
-DHT dht(DHTPIN, DHTTYPE);
-LiquidCrystal_I2C lcd(0x27, 16, 2);
+int temp,pot;
 
 void setup() {
-  lcd.begin(16, 2);
-  dht.begin();
+  Serial.begin(9600);
+  pinMode(bot1,INPUT_PULLUP);
+  pinMode(bot2,INPUT_PULLUP);
+  pinMode(LED1,OUTPUT);
+  pinMode(LED2,OUTPUT);
 }
 
 void loop() {
-  float umidade = dht.readHumidity();
-  float temperatura = dht.readTemperature();
-
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Temp: ");
-  lcd.print(temperatura);
-  lcd.print("C");
-
-  lcd.setCursor(0, 1);
-  lcd.print("Umidade: ");
-  lcd.print(umidade);
-  lcd.print("%");
-
-  delay(2000);
+  bool botao1 = digitalRead(bot1);
+  bool botao2 = digitalRead(bot2);
+  if(!botao1)
+    digitalWrite(LED1,1);
+  else
+    digitalWrite(LED1,0);
+  
+  if(!botao2)
+    digitalWrite(LED2,1);
+  else
+    digitalWrite(LED2,0);
+  pot = analogRead(A2);
+  temp = analogRead(A3);
+  Serial.print("POT: ");
+  Serial.println(pot);
+  Serial.print("TEMP: ");
+  Serial.println(temp);
+  Serial.println("\n");
+  delay(300);
 }
+
+## Observações finais
+Este programa faz o teste dos botões e dos LEDs. Além disso, envia pela porta serial, com baud rate de 9600 bps, a leitura analógica dos pinos A2 e A3, referentes ao potenciômetro e ao sensor LM35, respectivamente. Porém, as conversões não são transformadas, por enquanto, em tensão e temperatura.
