@@ -65,6 +65,7 @@ void loop() {
   Serial.println("\n");
   delay(300);
 }
+```
 
 ## Observações finais
 Este programa faz o teste dos botões e dos LEDs. Além disso, envia pela porta serial, com baud rate de 9600 bps, a leitura analógica dos pinos A2 e A3, referentes ao potenciômetro e ao sensor LM35, respectivamente. Porém, as conversões não são transformadas, por enquanto, em tensão e temperatura.
