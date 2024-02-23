@@ -28,7 +28,7 @@ Esta integração pode ter vários desdobramentos no que diz respeito á supervi
 
 ## Esquema de Conexão
 
-
+![Esquema de Conexão](esquema_conexao.png)
 
 ## Código Fonte (trecho)
 
